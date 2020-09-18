@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -13,15 +13,12 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// Inglese (Stati Uniti) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -44,18 +41,14 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", "Final Fantasy VII Sound Player\0"
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "Final Fantasy VII Sound Player\0"
-            VALUE "FileVersion", "1.0\0"
-            VALUE "InternalName", "FF7SND\0"
-            VALUE "LegalCopyright", "by Qhimm  -  2000\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "FF7SND.EXE\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "Final Fantasy VII Sound Player\0"
-            VALUE "ProductVersion", "1.0\0"
-            VALUE "SpecialBuild", "\0"
+            VALUE "Comments", "Final Fantasy VII Sound Player"
+            VALUE "FileDescription", "Final Fantasy VII Sound Player"
+            VALUE "FileVersion", "1.0"
+            VALUE "InternalName", "FF7SND"
+            VALUE "LegalCopyright", "by Qhimm  -  2000"
+            VALUE "OriginalFilename", "FF7SND.EXE"
+            VALUE "ProductName", "Final Fantasy VII Sound Player"
+            VALUE "ProductVersion", "1.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -64,8 +57,6 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -73,7 +64,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_FF7SND_DIALOG, DIALOG
     BEGIN
@@ -92,19 +83,17 @@ END
 //
 
 IDD_FF7SND_DIALOG DIALOGEX 0, 0, 196, 194
-STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "Final Fantasy VII Sound Player"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     PUSHBUTTON      "Exit",IDCANCEL,139,145,50,14
     PUSHBUTTON      "Open",ID_LOAD,7,7,50,14
     CHECKBOX        "Play",ID_PLAY,7,145,50,14,BS_PUSHLIKE
     CHECKBOX        "Extract",ID_EXTRACT,61,145,50,14,BS_PUSHLIKE
-    LISTBOX         IDC_CLIPS,7,37,182,103,LBS_OWNERDRAWFIXED | 
-                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    CTEXT           "FF7SND 1.0  -  by Qhimm  -  2000\nThe sound files are copyright of SquareSoft, Inc.",
-                    IDC_STATIC,7,170,182,17,WS_DISABLED
+    LISTBOX         IDC_CLIPS,7,37,182,103,LBS_OWNERDRAWFIXED | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "FF7SND 1.0  -  by Qhimm  -  2000\nThe sound files are copyright of SquareSoft, Inc.",IDC_STATIC,7,170,182,17,WS_DISABLED
     LTEXT           "  Clip ID",IDC_STATIC,7,27,66,8
     LTEXT           "Sampl. freq.",IDC_STATIC,134,27,40,8
     LTEXT           "Clip size",IDC_STATIC,89,27,36,8
@@ -118,19 +107,29 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON    DISCARDABLE     "Gast.ico"
-#endif    // English (U.S.) resources
+IDR_MAINFRAME           ICON                    "Gast.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_FF7SND_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // Inglese (Stati Uniti) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Swedish resources
+// Svedese (Svezia) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE)
-#ifdef _WIN32
-LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
+LANGUAGE LANG_SWEDISH, SUBLANG_SWEDISH
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -138,18 +137,18 @@ LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -169,7 +168,7 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Swedish resources
+#endif    // Svedese (Svezia) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

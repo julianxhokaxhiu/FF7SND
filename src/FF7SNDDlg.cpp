@@ -314,49 +314,74 @@ void CFF7SNDDlg::OnPlay()
 
 void CFF7SNDDlg::OnExtract() 
 {
-	// TODO: Add your control notification handler code here
-	int c = m_Clips.GetCurSel();
-
-	CFileDialog dlgFile(FALSE,
-		"dat",
+	CFolderPickerDialog dlgFolder(
 		"",
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-		"Wave files (*.wav)|*.wav|All files (*.*)|*.*|",
-		this);
+		0,
+		this
+	);
 
-	dlgFile.m_ofn.lpstrInitialDir = FF7Dir;
-	if (IDCANCEL == dlgFile.DoModal()) return;
-	
-	strcpy(FF7Dir, dlgFile.GetPathName());
-	FF7Dir[strlen(FF7Dir)-dlgFile.GetFileName().GetLength()-1] = 0;
+	dlgFolder.m_ofn.lpstrInitialDir = FF7Dir;
+	if (IDCANCEL == dlgFolder.DoModal()) return;
 
-	CFile fileIn, fileOut;
-	fileIn.Open(szDat, CFile::modeRead | CFile::shareDenyNone);
-	fileOut.Open(dlgFile.GetPathName(), CFile::modeWrite | CFile::modeCreate | CFile::shareDenyWrite);
+	for (int idx = 0; idx < m_Clips.GetCount(); idx++)
+	{
+		if (m_Clips.GetSel(idx) > 0)
+		{
+			char outPath[MAX_PATH]{ 0 };
 
-	FF7SNDHEADER *hdr = (FF7SNDHEADER*)(hdrmem+hdroff[c]);
-	ULONG temp = MAKEFOURCC('R','I','F','F');
-	fileOut.Write(&temp,4);
-	temp = hdr->length + 36 + (hdr->wfex.cbSize == 0 ? 0 : (4+hdr->wNumCoef * 4));
-	fileOut.Write(&temp,4);
-	temp = MAKEFOURCC('W','A','V','E');
-	fileOut.Write(&temp,4);
-	temp = MAKEFOURCC('f','m','t',' ');
-	fileOut.Write(&temp,4);
-	temp = 18 + (hdr->wfex.cbSize == 0 ? 0 : (4+hdr->wNumCoef*4));
-	fileOut.Write(&temp,4);
-	fileOut.Write(&hdr->wfex, 18 + (hdr->wfex.cbSize == 0 ? 0 : (4+hdr->wNumCoef*4)));
-	temp = MAKEFOURCC('d','a','t','a');
-	fileOut.Write(&temp,4);
-	temp = hdr->length;
-	fileOut.Write(&temp,4);
-	
-	char *buf = (char*)malloc(hdr->length);
-	fileIn.Seek(hdr->offset, CFile::begin);
-	fileIn.Read(buf, hdr->length);
-	fileOut.Write(buf, hdr->length);
-	free(buf);
+			CT2A chosenPath(dlgFolder.GetPathName());
 
-	fileIn.Close();
-	fileOut.Close();
+			sprintf(outPath, "%s/%d.wav", chosenPath.m_psz, idx);
+
+			CFile fileIn, fileOut;
+			fileIn.Open(szDat, CFile::modeRead | CFile::shareDenyNone);
+			fileOut.Open(outPath, CFile::modeWrite | CFile::modeCreate | CFile::shareDenyWrite);
+
+			FF7SNDHEADER* hdr = (FF7SNDHEADER*)(hdrmem + hdroff[idx]);
+			ULONG temp = MAKEFOURCC('R', 'I', 'F', 'F');
+			fileOut.Write(&temp, 4);
+			temp = hdr->length + 36 + (hdr->wfex.cbSize == 0 ? 0 : (4 + hdr->wNumCoef * 4));
+			fileOut.Write(&temp, 4);
+			temp = MAKEFOURCC('W', 'A', 'V', 'E');
+			fileOut.Write(&temp, 4);
+			temp = MAKEFOURCC('f', 'm', 't', ' ');
+			fileOut.Write(&temp, 4);
+			temp = 18 + (hdr->wfex.cbSize == 0 ? 0 : (4 + hdr->wNumCoef * 4));
+			fileOut.Write(&temp, 4);
+			fileOut.Write(&hdr->wfex, 18 + (hdr->wfex.cbSize == 0 ? 0 : (4 + hdr->wNumCoef * 4)));
+			temp = MAKEFOURCC('d', 'a', 't', 'a');
+			fileOut.Write(&temp, 4);
+			temp = hdr->length;
+			fileOut.Write(&temp, 4);
+
+			char* buf = (char*)malloc(hdr->length);
+			fileIn.Seek(hdr->offset, CFile::begin);
+			fileIn.Read(buf, hdr->length);
+			fileOut.Write(buf, hdr->length);
+			free(buf);
+
+			fileIn.Close();
+			fileOut.Close();
+		}
+	}
+
+	MessageBox("All files extracted successfully.", "", MB_ICONINFORMATION);
+}
+
+BOOL CFF7SNDDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if ((::GetKeyState(VK_CONTROL) & 0x8000) != 0)
+		{
+			switch (pMsg->wParam)
+			{
+			case 'A':
+				m_Clips.SelItemRange(TRUE, 0, m_Clips.GetCount() - 1);
+				break;
+			}
+		}
+	}
+
+	return CDialog::PreTranslateMessage(pMsg);
 }

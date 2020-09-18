@@ -50,8 +50,8 @@ class CFF7SNDDlg : public CDialog
 // Construction
 public:
 	int nHeaders;
-	char szDat[MAX_PATH];
-	char FF7Dir[MAX_PATH];
+	char szDat[MAX_PATH]{ 0 };
+	char FF7Dir[MAX_PATH]{ 0 };
 	CFF7SNDDlg(CWnd* pParent = NULL);	// standard constructor
 	~CFF7SNDDlg();
 
@@ -66,11 +66,14 @@ public:
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CFF7SNDDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
+public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
 protected:
 	HICON m_hIcon;
 
