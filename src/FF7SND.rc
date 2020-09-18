@@ -93,7 +93,7 @@ BEGIN
     CHECKBOX        "Play",ID_PLAY,7,145,50,14,BS_PUSHLIKE
     CHECKBOX        "Extract",ID_EXTRACT,61,145,50,14,BS_PUSHLIKE
     LISTBOX         IDC_CLIPS,7,37,182,103,LBS_OWNERDRAWFIXED | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
-    CTEXT           "FF7SND 1.0  -  by Qhimm  -  2000\nThe sound files are copyright of SquareSoft, Inc.",IDC_STATIC,7,170,182,17,WS_DISABLED
+    CTEXT           "FF7SND 1.0 - by Qhimm & Julian Xhokaxhiu - 2020\nThe sound files are copyright of SquareSoft, Inc.",IDC_STATIC,7,170,182,17,WS_DISABLED
     LTEXT           "  Clip ID",IDC_STATIC,7,27,66,8
     LTEXT           "Sampl. freq.",IDC_STATIC,134,27,40,8
     LTEXT           "Clip size",IDC_STATIC,89,27,36,8
