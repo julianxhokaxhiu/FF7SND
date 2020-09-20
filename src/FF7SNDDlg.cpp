@@ -85,41 +85,32 @@ BOOL CFF7SNDDlg::OnInitDialog()
 	HKEY keyReg;
 	strcpy(FF7Dir, ""); // Set the dir to nothing
 
-	if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software",0,KEY_ALL_ACCESS,&keyReg))
+	if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_LOCAL_MACHINE, R"(Software\Square Soft, Inc.\Final Fantasy VII)", 0, KEY_QUERY_VALUE | KEY_WOW64_32KEY, &keyReg))
 	{
-		HKEY keyReg2;
-		if (ERROR_SUCCESS == RegOpenKeyEx(keyReg,"Square Soft, Inc.",0,KEY_ALL_ACCESS,&keyReg2))
+		char buf[MAX_PATH];
+		unsigned long pulLen = (ULONG)MAX_PATH;
+
+		unsigned long lType = REG_SZ;
+		long lReturn = 0;
+
+		lReturn = RegQueryValueEx(
+			keyReg,
+			"AppPath",
+			NULL,
+			&lType,
+			(UCHAR*)&buf,
+			&pulLen );
+
+		if (ERROR_SUCCESS == lReturn)
 		{
-			HKEY keyReg3;
-			if (ERROR_SUCCESS == RegOpenKeyEx(keyReg2,"FINAL FANTASY VII",0,KEY_ALL_ACCESS,&keyReg3))
+			strcpy(FF7Dir, buf);
+			if (strlen(FF7Dir) != 0)
 			{
-				char buf[MAX_PATH];
-				unsigned long pulLen = (ULONG)MAX_PATH;
-
-				unsigned long lType = REG_SZ;
-				long lReturn = 0;
-
-				lReturn = RegQueryValueEx(
-					keyReg3,
-					"AppPath",
-					NULL,
-					&lType,
-					(UCHAR*)&buf,
-					&pulLen );
-
-				if (ERROR_SUCCESS == lReturn)
-				{
-					strcpy(FF7Dir, buf);
-					if (strlen(FF7Dir) != 0)
-					{
-						if (FF7Dir[strlen(FF7Dir)-1] != 92) strcat(FF7Dir, "\\");
-						strcat(FF7Dir, "Data\\Sound");
-					}
-				}
-				RegCloseKey(keyReg3);
+				if (FF7Dir[strlen(FF7Dir)-1] != 92) strcat(FF7Dir, "\\");
+				strcat(FF7Dir, "Data\\Sound");
 			}
-			RegCloseKey(keyReg2);
 		}
+			
 		RegCloseKey(keyReg);
 	}
 
