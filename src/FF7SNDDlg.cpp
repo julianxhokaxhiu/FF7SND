@@ -256,7 +256,7 @@ void CFF7SNDDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		FF7SNDHEADER* hdr = (FF7SNDHEADER*)(hdrmem+hdroff[c]);
 		
 		char buf[100];
-		sprintf(buf, "%05i", c);
+		sprintf(buf, "%05i", c+1);
 		dc.DrawText(CString(buf), CRect(rc.left+5,rc.top+1,rc.left+100,rc.bottom), 0);
 		
 		sprintf(buf, "%i kB", hdr->length >> 10);
@@ -331,7 +331,7 @@ void CFF7SNDDlg::OnExtract()
 
 			CT2A chosenPath(dlgFolder.GetPathName());
 
-			sprintf(outPath, "%s/%d.wav", chosenPath.m_psz, idx);
+			sprintf(outPath, "%s/%d.wav", chosenPath.m_psz, idx + 1);
 
 			CFile fileIn, fileOut;
 			fileIn.Open(szDat, CFile::modeRead | CFile::shareDenyNone);
