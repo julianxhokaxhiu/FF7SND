@@ -1,9 +1,9 @@
-﻿using Microsoft.Win32;
+﻿using FF7SND.Core;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using FF7SND.Core;
 using System.Linq;
 
 namespace FF7SND
