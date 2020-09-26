@@ -26,7 +26,7 @@ namespace FF7SND
             ret.Close();
         }
 
-        private void parseAudioFile(string audioDat, string audioFmt)
+        private bool parseAudioFile(string audioDat, string audioFmt)
         {
             audioList = new AudioFile[750];
 
@@ -74,6 +74,33 @@ namespace FF7SND
 
             fileFmt.Close();
             fileDat.Close();
+
+            return true;
+        }
+
+        private bool dumpAudioFile(string audioDat, string audioFmt)
+        {
+            FileStream fileFmt = File.OpenWrite(audioFmt);
+            FileStream fileDat = File.OpenWrite(audioDat);
+
+            for (int idx = 0; idx < audioList.Length; ++idx)
+            {
+                AudioFile audioFile = audioList[idx];
+
+                // Write fmt header
+                fileFmt.WriteStruct<FmtFileHeader>(audioFile.fmtHeader);
+
+                // Write ADPCM data
+                fileFmt.WriteStruct<ADPCMWAVEFORMAT>(audioFile.formatChunk.ADPCM);
+
+                // Write audio data
+                if (audioFile.Data != null) fileDat.Write(audioFile.Data, 0, audioFile.Data.Length);
+            }
+
+            fileFmt.Close();
+            fileDat.Close();
+
+            return true;
         }
 
         private void getWaveStream(Stream stream, int idx)
@@ -175,6 +202,25 @@ namespace FF7SND
                         lstView.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Selected = true);
                         break;
                 }
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "FF7 Sound file (audio.dat)|audio.dat|All files (*.*)|*.*";
+            saveFileDialog.DefaultExt = "dat";
+            saveFileDialog.FileName = "audio.dat";
+            if (FF7Dir != string.Empty) saveFileDialog.InitialDirectory = FF7Dir;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string audioDat = saveFileDialog.FileName;
+                string audioFmt = Path.ChangeExtension(audioDat, "fmt");
+
+                if (dumpAudioFile(audioDat, audioFmt))
+                    MessageBox.Show("Audio files were successfully saved in:\n\n" + audioFmt + "\n" + audioDat, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }
