@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using FF7SND.Core;
+using System.Linq;
 
 namespace FF7SND
 {
@@ -162,6 +163,19 @@ namespace FF7SND
                 MessageBox.Show("Successfully exported the selected items.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
+        }
+
+        private void Entry_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.A:
+                        lstView.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Selected = true);
+                        break;
+                }
+            }
         }
     }
 }

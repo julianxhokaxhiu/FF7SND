@@ -170,10 +170,12 @@
             this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "Entry";
             this.Text = "Final Fantasy VII Sound Player";
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Entry_KeyUp);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
