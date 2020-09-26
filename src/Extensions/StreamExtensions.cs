@@ -20,6 +20,17 @@ namespace FF7SND
             return structure;
         }
 
+        public static void WriteStruct<T>(this Stream stream, T data) where T : struct
+        {
+            var sz = Marshal.SizeOf(data);
+            IntPtr pStruct = Marshal.AllocHGlobal(sz);
+            Marshal.StructureToPtr(data, pStruct, false);
+            var buffer = Array.CreateInstance(typeof(byte), sz) as byte[];
+            Marshal.Copy(pStruct, buffer, 0, buffer.Length);
+            stream.Write(buffer, 0, sz);
+            Marshal.Release(pStruct);
+        }
+
         public static long SeekStruct<T>(this Stream stream) where T : struct
         {
             var sz = Marshal.SizeOf(typeof(T));

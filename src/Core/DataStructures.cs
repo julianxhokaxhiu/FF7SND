@@ -21,12 +21,6 @@ namespace FF7SND
     {
         public ushort Coef1;
         public ushort Coef2;
-
-        public void Serialize(BinaryWriter writer)
-        {
-            writer.Write(BitConverter.GetBytes(Coef1));
-            writer.Write(BitConverter.GetBytes(Coef2));
-        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -39,17 +33,6 @@ namespace FF7SND
         public ushort BlockAlign;
         public ushort BitsPerSample;
         public ushort cbSize;
-
-        public void Serialize(BinaryWriter writer)
-        {
-            writer.Write(BitConverter.GetBytes(FormatTag));
-            writer.Write(BitConverter.GetBytes(Channels));
-            writer.Write(BitConverter.GetBytes(SamplesPerSec));
-            writer.Write(BitConverter.GetBytes(AvgBytesPerSec));
-            writer.Write(BitConverter.GetBytes(BlockAlign));
-            writer.Write(BitConverter.GetBytes(BitsPerSample));
-            writer.Write(BitConverter.GetBytes(cbSize));
-        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -60,76 +43,43 @@ namespace FF7SND
         public ushort NumCoef;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 7)]
         public ADPCMCOEFSET[] Coef;
-
-        public void Serialize(BinaryWriter writer)
-        {
-            waveFormatEx.Serialize(writer);
-            writer.Write(BitConverter.GetBytes(SamplesPerBlock));
-            writer.Write(BitConverter.GetBytes(NumCoef));
-            for (ushort idx = 0; idx < 7; idx++) Coef[idx].Serialize(writer);
-        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct RiffChunk
     {
-        public string Id;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public char[] Id;
         public uint Size;
-        public string Format;
-
-        public void Serialize(BinaryWriter writer)
-        {
-            writer.Write(Encoding.ASCII.GetBytes(Id));
-            writer.Write(BitConverter.GetBytes(Size));
-            writer.Write(Encoding.ASCII.GetBytes(Format));
-        }
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public char[] Format;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct FormatChunk
     {
-        public string Id;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public char[] Id;
         public uint Size;
         public ADPCMWAVEFORMAT ADPCM;
-
-        public void Serialize(BinaryWriter writer)
-        {
-            writer.Write(Encoding.ASCII.GetBytes(Id));
-            writer.Write(BitConverter.GetBytes(Size));
-            ADPCM.Serialize(writer);
-        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct DataChunk
     {
-        public string Id;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public char[] Id;
         public uint Size;
-        public byte[] Data;
-
-        public void Serialize(BinaryWriter writer)
-        {
-            writer.Write(Encoding.ASCII.GetBytes(Id));
-            writer.Write(BitConverter.GetBytes(Size));
-            writer.Write(Data, 0, Data.Length);
-        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct LoopChunk
     {
-        public string Id;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public char[] Id;
         public uint Size;
         public uint Start;
         public uint End;
-
-        public void Serialize(BinaryWriter writer)
-        {
-            writer.Write(Encoding.ASCII.GetBytes(Id));
-            writer.Write(BitConverter.GetBytes(Size));
-            writer.Write(BitConverter.GetBytes(Start));
-            writer.Write(BitConverter.GetBytes(End));
-        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -140,5 +90,6 @@ namespace FF7SND
         public FormatChunk formatChunk;
         public LoopChunk loopChunk;
         public DataChunk dataChunk;
+        public byte[] Data;
     }
 }

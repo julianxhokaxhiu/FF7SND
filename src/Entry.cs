@@ -46,26 +46,26 @@ namespace FF7SND
                 audioList[idx].fmtHeader = fmtHeader;
 
                 // Set Header Info
-                audioList[idx].riffChunk.Id = "RIFF";
+                audioList[idx].riffChunk.Id = "RIFF".ToArray();
                 audioList[idx].riffChunk.Size = 0;
-                audioList[idx].riffChunk.Format = "WAVE";
+                audioList[idx].riffChunk.Format = "WAVE".ToArray();
 
                 // Set Format Info
-                audioList[idx].formatChunk.Id = "fmt ";
+                audioList[idx].formatChunk.Id = "fmt ".ToArray();
                 audioList[idx].formatChunk.Size = (uint)Marshal.SizeOf(typeof(ADPCMWAVEFORMAT));
                 audioList[idx].formatChunk.ADPCM = fileFmt.ReadStruct<ADPCMWAVEFORMAT>();
 
                 // Set Loop Info
-                audioList[idx].loopChunk.Id = "fflp";
+                audioList[idx].loopChunk.Id = "fflp".ToArray();
                 audioList[idx].loopChunk.Size = (uint)Marshal.SizeOf(typeof(uint)) * 2;
                 audioList[idx].loopChunk.Start = fmtHeader.Start;
                 audioList[idx].loopChunk.End = fmtHeader.End;
 
                 // Set Data Info
-                audioList[idx].dataChunk.Id = "data";
+                audioList[idx].dataChunk.Id = "data".ToArray();
                 audioList[idx].dataChunk.Size = fmtHeader.Length;
-                audioList[idx].dataChunk.Data = new byte[audioList[idx].dataChunk.Size];
-                fileDat.Read(audioList[idx].dataChunk.Data, 0, audioList[idx].dataChunk.Data.Length);
+                audioList[idx].Data = new byte[audioList[idx].dataChunk.Size];
+                fileDat.Read(audioList[idx].Data, 0, audioList[idx].Data.Length);
 
                 // Finish saving some last info
                 audioList[idx].riffChunk.Size = (uint)(audioList[idx].riffChunk.Id.Length + Marshal.SizeOf(typeof(FormatChunk)) + Marshal.SizeOf(typeof(DataChunk)) + audioList[idx].dataChunk.Size);
@@ -78,14 +78,14 @@ namespace FF7SND
 
         private void getWaveStream(Stream stream, int idx)
         {
-            BinaryWriter writer = new BinaryWriter(stream);
             AudioFile audioFile = audioList[idx];
 
-            audioFile.riffChunk.Serialize(writer);
-            audioFile.formatChunk.Serialize(writer);
-            audioFile.dataChunk.Serialize(writer);
+            stream.WriteStruct<RiffChunk>(audioFile.riffChunk);
+            stream.WriteStruct<FormatChunk>(audioFile.formatChunk);
+            stream.WriteStruct<DataChunk>(audioFile.dataChunk);
+            stream.Write(audioFile.Data, 0, audioFile.Data.Length);
 
-            if (audioFile.fmtHeader.Loop > 0) audioFile.loopChunk.Serialize(writer);
+            if (audioFile.fmtHeader.Loop > 0) stream.WriteStruct<LoopChunk>(audioFile.loopChunk);
         }
 
         private void renderList()
