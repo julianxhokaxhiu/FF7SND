@@ -15,7 +15,7 @@ Write-Host "##vso[task.setvariable variable=_BUILD_VERSION;]${env:_BUILD_VERSION
 Write-Host "##vso[task.setvariable variable=_RELEASE_VERSION;]${env:_RELEASE_VERSION}"
 Write-Host "##vso[task.setvariable variable=_IS_BUILD_CANARY;]${env:_IS_BUILD_CANARY}"
 
-Set-Location ${env:buildPath}\src\Release
+Set-Location ${env:buildPath}\src\bin\Release
 New-Item -Path ".dist" -ItemType Directory | Out-Null
 
 Move-Item *.exe .dist

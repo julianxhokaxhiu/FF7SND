@@ -27,7 +27,7 @@ steps:
   displayName: 'Build $(_RELEASE_NAME)'
   inputs:
     solution: $(Build.Repository.LocalPath)\src\FF7SND.sln
-    platform: x86
+    platform: Any CPU
     configuration: $(_RELEASE_CONFIGURATION)
     msbuildArgs: /p:WindowsTargetPlatformVersion=10.0.19041.0
 - task: PowerShell@2
