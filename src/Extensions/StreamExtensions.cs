@@ -26,7 +26,7 @@ namespace FF7SND
             var buffer = Array.CreateInstance(typeof(byte), sz) as byte[];
             Marshal.Copy(pStruct, buffer, 0, buffer.Length);
             stream.Write(buffer, 0, sz);
-            Marshal.Release(pStruct);
+            Marshal.FreeHGlobal(pStruct);
         }
 
         public static long SeekStruct<T>(this Stream stream) where T : struct
