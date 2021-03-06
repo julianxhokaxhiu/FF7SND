@@ -110,7 +110,8 @@ namespace FF7SND
             stream.WriteStruct<RiffChunk>(audioFile.riffChunk);
             stream.WriteStruct<FormatChunk>(audioFile.formatChunk);
             stream.WriteStruct<DataChunk>(audioFile.dataChunk);
-            stream.Write(audioFile.Data, 0, audioFile.Data.Length);
+
+            if (audioFile.Data != null) stream.Write(audioFile.Data, 0, audioFile.Data.Length);
 
             if (audioFile.fmtHeader.Loop > 0) stream.WriteStruct<LoopChunk>(audioFile.loopChunk);
         }
