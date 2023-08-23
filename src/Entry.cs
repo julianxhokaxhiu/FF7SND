@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
+using System.Diagnostics;
 
 namespace FF7SND
 {
@@ -158,7 +159,11 @@ namespace FF7SND
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/julianxhokaxhiu/FF7SND");
+            ProcessStartInfo startInfo = new ProcessStartInfo("https://github.com/julianxhokaxhiu/FF7SND")
+            {
+                UseShellExecute = true,
+            };
+            Process.Start(startInfo);
         }
 
         private void btnPlay_Click(object sender, EventArgs e)
