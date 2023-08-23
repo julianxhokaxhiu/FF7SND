@@ -48,7 +48,7 @@ steps:
     solution: $(Build.Repository.LocalPath)\src\$(_RELEASE_NAME).sln
     platform: Any CPU
     configuration: $(_RELEASE_CONFIGURATION)
-    msbuildArgs: /p:WindowsTargetPlatformVersion=10.0.19041.0
+    msbuildArgs: /p:WindowsTargetPlatformVersion=10.0.19041.0 /m
 - task: PowerShell@2
   displayName: 'Package $(_RELEASE_NAME)'
   inputs:
