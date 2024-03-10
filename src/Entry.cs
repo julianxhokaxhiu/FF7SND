@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
 using System.Diagnostics;
+using ATL;
 
 namespace FF7SND
 {
@@ -114,7 +115,23 @@ namespace FF7SND
 
             if (audioFile.Data != null) stream.Write(audioFile.Data, 0, audioFile.Data.Length);
 
-            if (audioFile.fmtHeader.Loop > 0) stream.WriteStruct<LoopChunk>(audioFile.loopChunk);
+            if (audioFile.fmtHeader.Loop > 0)
+            {
+                var track = new Track(stream);
+
+                ATL.Settings.ID3v2_tagSubVersion = 3;
+
+                // Add Wave loop points
+                track.AdditionalFields["sample.NumSampleLoops"] = "1";
+                track.AdditionalFields["sample.SampleLoop[0].Start"] = audioFile.loopChunk.Start.ToString();
+                track.AdditionalFields["sample.SampleLoop[0].End"] = audioFile.loopChunk.End.ToString();
+
+                // Add ID3 Tags
+                track.AdditionalFields["LOOPSTART"] = audioFile.loopChunk.Start.ToString();
+                track.AdditionalFields["LOOPEND"] = audioFile.loopChunk.End.ToString();
+
+                track.Save();
+            }
         }
 
         private void renderList()
@@ -188,7 +205,7 @@ namespace FF7SND
             {
                 foreach(ListViewItem item in lstView.SelectedItems)
                 {
-                    FileStream fileOut = File.OpenWrite(folderDialog.SelectedPath + @"\" + (item.Index + 1).ToString() + @".wav");
+                    FileStream fileOut = File.Open(folderDialog.SelectedPath + @"\" + (item.Index + 1).ToString() + @".wav", FileMode.Create);
                     getWaveStream(fileOut, item.Index);
                     fileOut.Close();
                 }

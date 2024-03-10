@@ -7,6 +7,9 @@
     <Copyright>Julian Xhokaxhiu 2021</Copyright>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="z440.atl.core" Version="5.20.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
