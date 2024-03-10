@@ -20,6 +20,9 @@ namespace FF7SND
         {
             InitializeComponent();
 
+            // Use ID3v2.3
+            ATL.Settings.ID3v2_tagSubVersion = 3;
+
             RegistryKey ret = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"Software\Square Soft, Inc.\Final Fantasy VII");
             if (ret != null)
             {
@@ -119,16 +122,17 @@ namespace FF7SND
             {
                 var track = new Track(stream);
 
-                ATL.Settings.ID3v2_tagSubVersion = 3;
+                var loopStart = audioFile.loopChunk.Start / (44100 / audioFile.formatChunk.ADPCM.waveFormatEx.SamplesPerSec);
+                var loopEnd = audioFile.loopChunk.End / (44100 / audioFile.formatChunk.ADPCM.waveFormatEx.SamplesPerSec);
 
                 // Add Wave loop points
                 track.AdditionalFields["sample.NumSampleLoops"] = "1";
-                track.AdditionalFields["sample.SampleLoop[0].Start"] = audioFile.loopChunk.Start.ToString();
-                track.AdditionalFields["sample.SampleLoop[0].End"] = audioFile.loopChunk.End.ToString();
+                track.AdditionalFields["sample.SampleLoop[0].Start"] = loopStart.ToString();
+                track.AdditionalFields["sample.SampleLoop[0].End"] = loopEnd.ToString();
 
                 // Add ID3 Tags
-                track.AdditionalFields["LOOPSTART"] = audioFile.loopChunk.Start.ToString();
-                track.AdditionalFields["LOOPEND"] = audioFile.loopChunk.End.ToString();
+                track.AdditionalFields["LOOPSTART"] = loopStart.ToString();
+                track.AdditionalFields["LOOPEND"] = loopEnd.ToString();
 
                 track.Save();
             }
