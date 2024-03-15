@@ -27,8 +27,8 @@ namespace FF7SND
             if (ret != null)
             {
                 FF7Dir = ret.GetValue("AppPath") + @"Data\Sound";
+                ret.Close();
             }
-            ret.Close();
         }
 
         private bool parseAudioFile(string audioDat, string audioFmt)
