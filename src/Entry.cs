@@ -122,8 +122,8 @@ namespace FF7SND
             {
                 var track = new Track(stream);
 
-                var loopStart = audioFile.loopChunk.Start / (44100 / audioFile.formatChunk.ADPCM.waveFormatEx.SamplesPerSec);
-                var loopEnd = audioFile.loopChunk.End / (44100 / audioFile.formatChunk.ADPCM.waveFormatEx.SamplesPerSec);
+                var loopStart = audioFile.loopChunk.Start * (audioFile.formatChunk.ADPCM.waveFormatEx.Channels / 2.0);
+                var loopEnd = audioFile.loopChunk.End * (audioFile.formatChunk.ADPCM.waveFormatEx.Channels / 2.0);
 
                 // Add Wave loop points
                 track.AdditionalFields["sample.NumSampleLoops"] = "1";
