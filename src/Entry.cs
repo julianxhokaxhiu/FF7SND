@@ -70,7 +70,7 @@ namespace FF7SND
                 audioList[idx].dataChunk.Id = "data".ToArray();
                 audioList[idx].dataChunk.Size = fmtHeader.Length;
                 audioList[idx].Data = new byte[audioList[idx].dataChunk.Size];
-                fileDat.Read(audioList[idx].Data, 0, audioList[idx].Data.Length);
+                fileDat.ReadExactly(audioList[idx].Data);
 
                 // Finish saving some last info
                 audioList[idx].riffChunk.Size = (uint)(Marshal.SizeOf(typeof(FormatChunk)) + Marshal.SizeOf(typeof(DataChunk)) + audioList[idx].dataChunk.Size - Marshal.SizeOf(typeof(RiffChunk)));

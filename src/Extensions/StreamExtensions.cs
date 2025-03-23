@@ -10,7 +10,7 @@ namespace FF7SND
         {
             var sz = Marshal.SizeOf(typeof(T));
             var buffer = new byte[sz];
-            stream.Read(buffer, 0, sz);
+            stream.ReadExactly(buffer, 0, sz);
             var pinnedBuffer = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             var structure = (T)Marshal.PtrToStructure(
                 pinnedBuffer.AddrOfPinnedObject(), typeof(T));
